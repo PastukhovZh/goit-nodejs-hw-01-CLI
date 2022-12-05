@@ -11,7 +11,7 @@ listContacts()
           break;
 
     case "get":
-          getContactById(id)
+          getContactById(name)
           break;
 
     case "add":
@@ -19,7 +19,9 @@ addContact(name, email, phone)
       break;
 
     case "remove":
-     console.log('id',id)
+      removeContact(id)
+      console.log("id",id)
+      
       break;
 
     default:
@@ -28,3 +30,5 @@ addContact(name, email, phone)
 }
 
 invokeAction(argv);
+
+// console.log(getContactById(contactId))

@@ -1,47 +1,59 @@
 const path = require("path")
-const fs = require("fs")
+const fs = require("fs").promises
 
 
 
 const contactsPath = path.resolve("db/contacts.json")
 
-
 // TODO: задокументировать каждую функцию
-function listContacts() {
-return fs.readFile(contactsPath, "utf-8", (err,data) => {
-    if (err) {
-        console.error(err)
-    }
-    console.log(data)
-})
+async function listContacts() {
+ try {
+    const data = await fs.readFile(contactsPath);
+    const result = JSON.parse(data);
+    console.table(result);
+  } catch (error) {
+    console.log(error);
+  }
 }
 
-function getContactById(contactId) {
-return fs.readFile(contactsPath, "utf-8", (err,data) => {
-    if (err) {
-        console.error(err)
-    }
-    contactId=data.id
-    console.log(contactId)
-})
+async function getContactById(contactId) {
+     try {
+    const data = await fs.readFile(contactsPath);
+    const result = JSON.parse(data);
+    return console.table(result.find(contact => contact.id = contactId))
+    } catch (error) {
+    console.log(error);
+  }
 }
 
-function removeContact(contactId) {
-return fs.unlink(contactsPath,{contactId}, "utf-8", (err,data) => {
-    if (err) {
-        console.error(err)
+async function removeContact(contactId) {
+    try {
+        const data =await fs.readFile(contactsPath);
+    const result =JSON.parse( data);
+        const findDelete = result.findIndex(contact=>contact.id == contactId)
+        result.splice(findDelete, 1)
+        await fs.writeFile(contactsPath, JSON.stringify(result))
+        console.table(result)
+    } catch (error) {
+    console.log(error);
+        
     }
-    console.log(data)
-} )
 }
 
-function addContact(name, email, phone) {
-return fs.appendFile(contactsPath,{name, email,phone}, "utf-8", (err,data) => {
-    if (err) {
-        console.error(err)
-    }
-    console.log(data)
-} )
+async function addContact(name, email, phone) {
+try {
+    const data =await fs.readFile(contactsPath);
+    const result = JSON.parse(data);
+    const uId= Math.random().toFixed(2)
+    const newContact = { id:uId, name, email, phone }
+    result.push(newContact)
+
+    await fs.writeFile(contactsPath, JSON.stringify(result))
+console.table(result)
+} catch (error) {
+    console.log(error);
+
+}
 }
 
 
