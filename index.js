@@ -1,5 +1,17 @@
 const { listContacts, getContactById, removeContact, addContact } = require("./contact")
-const argv = require("yargs").argv;
+const { Command } = require("commander");
+const program = new Command();
+program
+  .option("-a, --action <type>", "choose action")
+  .option("-i, --id <type>", "user id")
+  .option("-n, --name <type>", "user name")
+  .option("-e, --email <type>", "user email")
+  .option("-p, --phone <type>", "user phone");
+
+program.parse(process.argv);
+
+const argv = program.opts();
+
 
 
 
@@ -11,7 +23,7 @@ listContacts()
           break;
 
     case "get":
-          getContactById(name)
+          getContactById(id)
           break;
 
     case "add":
@@ -20,7 +32,6 @@ addContact(name, email, phone)
 
     case "remove":
       removeContact(id)
-      console.log("id",id)
       
       break;
 
